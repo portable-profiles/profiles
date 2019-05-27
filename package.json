@@ -1,0 +1,24 @@
+{
+  "name": "@paladin-privacy/profiles",
+  "version": "0.0.1",
+  "description": "Javascript library to manage paladin profiles",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paladin-privacy/profiles.git"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/paladin-privacy/profiles/issues"
+  },
+  "homepage": "https://github.com/paladin-privacy/profiles#readme",
+  "devDependencies": {
+    "prettier": "^1.17.1",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  }
+}
