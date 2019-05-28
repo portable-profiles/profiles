@@ -8,7 +8,8 @@
     "format:check": "prettier --check \"./**/*.{js,jsx,json,ts,tsx}\"",
     "lint": "tslint --fix src/**/*.{js,jsx,ts,tsx}",
     "lint:check": "tslint src/**/*.{js,jsx,ts,tsx}",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
