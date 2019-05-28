@@ -1,6 +1,6 @@
 import { ICredentials, ISignature } from '../models';
 import * as _ from 'lodash';
-import * as cr from 'crypto';
+import cr = require('crypto');
 
 export class PaladinKeychain {
   public static create(): PaladinKeychain {
