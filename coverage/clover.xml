@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1559022466782" clover="3.2.0">
+  <project timestamp="1559022466782" name="All files">
+    <metrics statements="89" coveredstatements="89" conditionals="30" coveredconditionals="30" methods="17" coveredmethods="17" elements="136" coveredelements="136" complexity="0" loc="89" ncloc="89" packages="3" files="3" classes="3"/>
+    <package name="src">
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="constants.ts" path="/Users/matt/Code/P3/profiles/src/constants.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.crypto">
+      <metrics statements="25" coveredstatements="25" conditionals="6" coveredconditionals="6" methods="6" coveredmethods="6"/>
+      <file name="keychain.ts" path="/Users/matt/Code/P3/profiles/src/crypto/keychain.ts">
+        <metrics statements="25" coveredstatements="25" conditionals="6" coveredconditionals="6" methods="6" coveredmethods="6"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="10" type="stmt"/>
+        <line num="18" count="10" type="stmt"/>
+        <line num="27" count="26" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="30" count="25" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="34" count="11" type="stmt"/>
+        <line num="35" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="40" count="10" type="stmt"/>
+        <line num="41" count="10" type="stmt"/>
+        <line num="42" count="10" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="46" count="11" type="stmt"/>
+        <line num="47" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="52" count="10" type="stmt"/>
+        <line num="53" count="10" type="stmt"/>
+        <line num="54" count="10" type="stmt"/>
+        <line num="57" count="2" type="stmt"/>
+        <line num="58" count="7" type="stmt"/>
+        <line num="60" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.paladin">
+      <metrics statements="59" coveredstatements="59" conditionals="24" coveredconditionals="24" methods="11" coveredmethods="11"/>
+      <file name="paladin.ts" path="/Users/matt/Code/P3/profiles/src/paladin/paladin.ts">
+        <metrics statements="59" coveredstatements="59" conditionals="24" coveredconditionals="24" methods="11" coveredmethods="11"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="11" count="10" type="stmt"/>
+        <line num="13" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="4" type="stmt"/>
+        <line num="17" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="22" count="6" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="6" type="stmt"/>
+        <line num="28" count="6" type="stmt"/>
+        <line num="29" count="6" type="stmt"/>
+        <line num="30" count="6" type="cond" truecount="4" falsecount="0"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="33" count="5" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="4" type="stmt"/>
+        <line num="42" count="4" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="46" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="49" count="6" type="stmt"/>
+        <line num="50" count="6" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="58" count="5" type="stmt"/>
+        <line num="59" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="64" count="4" type="stmt"/>
+        <line num="67" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="68" count="3" type="stmt"/>
+        <line num="70" count="4" type="stmt"/>
+        <line num="73" count="4" type="stmt"/>
+        <line num="74" count="4" type="stmt"/>
+        <line num="77" count="4" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="81" count="7" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="85" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="86" count="3" type="stmt"/>
+        <line num="88" count="12" type="stmt"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="93" count="3" type="stmt"/>
+        <line num="96" count="3" type="stmt"/>
+        <line num="97" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="98" count="1" type="stmt"/>
+        <line num="102" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="103" count="1" type="stmt"/>
+        <line num="109" count="2" type="stmt"/>
+        <line num="111" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="115" count="2" type="stmt"/>
+        <line num="116" count="2" type="stmt"/>
+        <line num="118" count="2" type="stmt"/>
+        <line num="120" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

@@ -42,7 +42,7 @@ export class PaladinKeychain {
     return { signature: sign.sign(privateKey, 'base64') };
   }
 
-  public verify(data: string, signature: string): boolean {
+  public verify(data: string, signature: ISignature): boolean {
     const publicKey = this.credentials.publicKey;
     if (!publicKey) {
       throw new Error(
@@ -51,7 +51,7 @@ export class PaladinKeychain {
     }
     const verify = crypto.createVerify('RSA-SHA256');
     verify.update(data);
-    return verify.verify(publicKey, signature, 'base64');
+    return verify.verify(publicKey, signature.signature, 'base64');
   }
 
   public getCredentials(): ICredentials {

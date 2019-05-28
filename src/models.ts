@@ -1,4 +1,6 @@
-export interface IVisibility {}
+export interface IVisibility {
+  mode: 'public' | 'private';
+}
 
 export interface IField {
   value: any;
@@ -6,16 +8,16 @@ export interface IField {
 }
 
 export interface IProfileBody {
-  id: string;
-  revision: number;
+  id: string | null;
+  revision: number | null;
   fields: { [key: string]: IField };
-  createdOn: number;
-  modifiedOn: number;
+  createdOn: number | null;
+  modifiedOn: number | null;
 }
 
 export interface IProfile {
   body: IProfileBody;
-  signature: ISignature;
+  signature: ISignature | null;
 }
 
 export interface ISignature {
@@ -23,8 +25,8 @@ export interface ISignature {
 }
 
 export interface ICredentials {
-  privateKey: string;
-  publicKey: string;
+  privateKey?: string;
+  publicKey?: string;
 }
 
 export interface IStatus {
