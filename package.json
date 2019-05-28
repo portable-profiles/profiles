@@ -4,7 +4,11 @@
   "description": "Javascript library to manage paladin profiles",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\"",
+    "format:check": "prettier --check \"./**/*.{js,jsx,json,ts,tsx}\"",
+    "lint": "tslint --fix src/**/*.{js,jsx,ts,tsx}",
+    "lint:check": "tslint src/**/*.{js,jsx,ts,tsx}",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,8 +21,17 @@
   },
   "homepage": "https://github.com/paladin-privacy/profiles#readme",
   "devDependencies": {
+    "@types/jest": "^24.0.13",
+    "@types/lodash": "^4.14.132",
+    "@types/node": "^12.0.2",
+    "jest": "^24.8.0",
     "prettier": "^1.17.1",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0"
   }
 }
