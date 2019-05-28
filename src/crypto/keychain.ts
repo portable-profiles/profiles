@@ -1,10 +1,10 @@
 import { ICredentials, ISignature } from '../models';
 import * as _ from 'lodash';
-import * as crypto from 'crypto';
+import * as cr from 'crypto';
 
 export class PaladinKeychain {
   public static create(): PaladinKeychain {
-    const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
+    const { publicKey, privateKey } = cr.generateKeyPairSync('rsa', {
       modulusLength: 4096,
       publicKeyEncoding: {
         type: 'spki',
@@ -37,7 +37,7 @@ export class PaladinKeychain {
         'These credentials are not authorized to create signatures'
       );
     }
-    const sign = crypto.createSign('RSA-SHA256');
+    const sign = cr.createSign('RSA-SHA256');
     sign.update(data);
     return { signature: sign.sign(privateKey, 'base64') };
   }
@@ -49,7 +49,7 @@ export class PaladinKeychain {
         'These credentials are not authorized to verify signatures'
       );
     }
-    const verify = crypto.createVerify('RSA-SHA256');
+    const verify = cr.createVerify('RSA-SHA256');
     verify.update(data);
     return verify.verify(publicKey, signature.signature, 'base64');
   }
