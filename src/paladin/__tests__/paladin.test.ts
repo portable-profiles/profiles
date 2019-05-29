@@ -1,6 +1,6 @@
 import { Paladin } from '../paladin';
 import { Visibility, Fields, defaultPaladin } from '../../constants';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { ISignature } from '../../models';
 
 test('create a basic, valid paladin profile', () => {

@@ -48,3 +48,11 @@ test('verify that public key must be present to sign', () => {
     expect(keychain.verify(data, signature)).toBe(true);
   }).toThrow();
 });
+
+test('test fallback key generation mechanism', () => {
+  const cr = require('crypto');
+  cr.generateKeyPairSync = null;
+  const keychain = PaladinKeychain.create();
+  const signature = keychain.sign(data);
+  expect(keychain.verify(data, signature)).toBe(true);
+});

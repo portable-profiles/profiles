@@ -2,7 +2,7 @@ import { IPaladin, IVisibility } from '../models';
 import * as _ from 'lodash';
 import { defaultPaladin, Visibility } from '../constants';
 import { PaladinKeychain } from '../crypto/keychain';
-import moment from 'moment';
+import * as moment from 'moment';
 
 export class Paladin {
   private paladin: IPaladin;

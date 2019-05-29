@@ -1,24 +1,39 @@
 import { ICredentials, ISignature } from '../models';
 import * as _ from 'lodash';
 import cr = require('crypto');
+import keypair = require('keypair');
 
 export class PaladinKeychain {
+  /**
+   * Generate a new keychain. Two alternative solutions are supported here,
+   * one uses nodeJS crypto and OpenSSL. This is the preferred solution. However,
+   * it may not be available. In that case, a pure-JS implementation is
+   * used instead.
+   */
   public static create(): PaladinKeychain {
-    const { publicKey, privateKey } = cr.generateKeyPairSync('rsa', {
-      modulusLength: 4096,
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem',
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem',
-      },
-    });
-    return new PaladinKeychain({
-      publicKey,
-      privateKey,
-    });
+    if (cr.generateKeyPairSync) {
+      const { publicKey, privateKey } = cr.generateKeyPairSync('rsa', {
+        modulusLength: 4096,
+        publicKeyEncoding: {
+          type: 'spki',
+          format: 'pem',
+        },
+        privateKeyEncoding: {
+          type: 'pkcs8',
+          format: 'pem',
+        },
+      });
+      return new PaladinKeychain({
+        publicKey,
+        privateKey,
+      });
+    } else {
+      const pair = keypair();
+      return new PaladinKeychain({
+        publicKey: pair.public,
+        privateKey: pair.private,
+      });
+    }
   }
 
   private credentials: ICredentials;
