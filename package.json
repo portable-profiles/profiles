@@ -1,6 +1,6 @@
 {
   "name": "@paladin-privacy/profiles",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Javascript library to manage paladin profiles",
   "main": "dist/index.js",
   "scripts": {
@@ -33,9 +33,11 @@
   },
   "dependencies": {
     "@types/node-rsa": "^1.0.0",
+    "@types/uuid": "^3.4.4",
     "keypair": "^1.0.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
-    "node-rsa": "^1.0.5"
+    "node-rsa": "^1.0.5",
+    "uuid": "^3.3.2"
   }
 }

@@ -1,1 +1,1 @@
-export * from './paladin';
+export * from './profile';

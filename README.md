@@ -8,7 +8,7 @@ Create a profile:
 import { Paladin } from '@paladin-privacy/profiles';
 
 const paladin = new Paladin();
-paladin.createCredentials();
+paladin.initialize();
 paladin.setField(Fields.Nickname, 'Jane', Visibility.Public);
 paladin.setField(Fields.Email, 'jane@example.com', Visibility.Private);
 paladin.sign();

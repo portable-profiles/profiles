@@ -1,23 +1,19 @@
-import { IVisibility, IPaladin } from './models';
+import { IVisibility, IProfile } from './models';
 
 export const software = '@paladin-privacy/profiles';
 export const version = '0.0.1';
 
-export const defaultPaladin: IPaladin = {
+export const defaultProfile: IProfile = {
   spec: `${software}:${version}`,
-  profile: {
-    body: {
-      id: null,
-      revision: null,
-      fields: {},
-      createdOn: null,
-      modifiedOn: null,
-    },
-    signature: null,
+  body: {
+    id: null,
+    revision: null,
+    fields: {},
+    friends: [],
+    createdOn: null,
+    modifiedOn: null,
   },
-  settings: {
-    chunkSize: 10,
-  },
+  signature: null,
 };
 
 export const Fields = {

@@ -3,7 +3,8 @@ export interface IVisibility {
 }
 
 export interface IField {
-  value: any;
+  value?: any;
+  encryption?: { [key: string]: IEncryption };
   visibility: IVisibility;
 }
 
@@ -11,13 +12,9 @@ export interface IProfileBody {
   id: string | null;
   revision: number | null;
   fields: { [key: string]: IField };
+  friends: IFriend[];
   createdOn: number | null;
   modifiedOn: number | null;
-}
-
-export interface IProfile {
-  body: IProfileBody;
-  signature: ISignature | null;
 }
 
 export interface ISignature {
@@ -53,10 +50,28 @@ export interface ISettings {
   chunkSize: number;
 }
 
-export interface IPaladin {
+export interface IProfile {
   spec: string;
-  profile: IProfile;
-  feed?: IFeed;
+  body: IProfileBody;
+  signature: ISignature | null;
   credentials?: ICredentials;
-  settings: ISettings;
+}
+
+export interface IServer {
+  domain: string;
+}
+
+export interface IFriend {
+  id: string;
+  nickname: string;
+  servers: IServer[];
+  publicKey: string;
+}
+
+export interface IEncryption {
+  forId?: string;
+  algorithm: string;
+  iv: string;
+  encryptedKey: string;
+  encryptedData: string;
 }

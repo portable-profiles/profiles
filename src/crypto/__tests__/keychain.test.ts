@@ -1,4 +1,5 @@
 import { PaladinKeychain } from '../keychain';
+import * as uuidv4 from 'uuid/v4';
 
 const data = 'bbf43a61-dad4-43ca-8ebd-a04710bdeb49';
 
@@ -49,10 +50,54 @@ test('verify that public key must be present to sign', () => {
   }).toThrow();
 });
 
-test('test fallback key generation mechanism', () => {
-  const cr = require('crypto');
-  cr.generateKeyPairSync = null;
-  const keychain = PaladinKeychain.create();
-  const signature = keychain.sign(data);
-  expect(keychain.verify(data, signature)).toBe(true);
+test('verify encryption and decryption', () => {
+  const secret = uuidv4();
+
+  // Alice creates her keychain
+  const alice = PaladinKeychain.create();
+  const alicePublic = alice.getPublic();
+
+  // ...
+  // Alice transmits `alicePublic` to bob
+  // ...
+
+  // Bob creates his keychain and encrypts data for alice
+  const bob = PaladinKeychain.create();
+  const encryption = bob.encrypt(alicePublic, secret);
+
+  // Verify structure of created encryption
+  expect(encryption.iv).toBeTruthy();
+  expect(encryption.encryptedKey).toBeTruthy();
+  expect(encryption.encryptedData).toBeTruthy();
+  expect(encryption.encryptedData).not.toContain(secret);
+  expect(encryption.algorithm).toEqual('aes-256-cbc');
+
+  // ...
+  // Bob transmits `encryption` to alice
+  // ...
+
+  // Verify that alice can read the message
+  const receive = alice.decrypt(encryption);
+  expect(receive).toEqual(secret);
+});
+
+test('verify encryption restrictions', () => {
+  const alice = PaladinKeychain.create().getPublic();
+  const bob = PaladinKeychain.create().getPublic();
+  const secret = uuidv4();
+  expect(() => {
+    alice.encrypt(bob.getPrivate(), secret);
+  }).toThrow();
+});
+
+test('verify decryption restrictions', () => {
+  const secret = uuidv4();
+  const alice = PaladinKeychain.create();
+  const alicePublic = alice.getPublic();
+  const bob = PaladinKeychain.create();
+  const encryption = bob.encrypt(alicePublic, secret);
+
+  expect(() => {
+    bob.getPublic().decrypt(encryption);
+  }).toThrow();
 });
