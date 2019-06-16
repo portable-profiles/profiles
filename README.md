@@ -5,7 +5,7 @@ This javascript library lets you create and manage profiles for Paladin, the dis
 ## Basic usage
 
 ```typescript
-import { Profile } from '@paladin-privacy/profiles';
+import { Profile, Fields, Visibility } from '@paladin-privacy/profiles';
 
 const profile = new Profile();
 profile.initialize();
@@ -30,4 +30,22 @@ To share the profile with someone else, first use `filterFor`; it will strip out
 import { Visibility } from '@paladin-privacy/profiles';
 const toShare = profile.filterFor(Visibility.Public);
 const dataToShare = profile.getProfile();
+```
+
+Add friends and encrypt data for them only:
+
+```typescript
+import { Profile, Fields, Visibility, forFriends } from '@paladin-privacy/profiles';
+
+const alice = new Profile();
+alice.setField(Fields.Nickname, 'Alice', Visibility.Public);
+alice.sign();
+
+const bob = new Profile();
+bob.addFriend(alice);
+bob.setField(Fields.Nickname, 'Bob', Visibility.Public);
+bob.setField(Fields.Email, 'bob@example.org', forFriends([ alice.toFriend() ]));
+
+console.log(bob.getField(Fields.Email, alice));
+// Result: bob@example.org
 ```
