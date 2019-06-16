@@ -1,6 +1,6 @@
 {
   "name": "@paladin-privacy/profiles",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Javascript library to manage paladin profiles",
   "main": "dist/index.js",
   "scripts": {

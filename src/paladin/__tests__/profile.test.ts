@@ -2,6 +2,7 @@ import { Visibility, Fields, defaultProfile } from '../../constants';
 import * as _ from 'lodash';
 import { ISignature } from '../../models';
 import { Profile } from '../profile';
+import { forFriends } from '../../utils/visibility';
 
 const MOCK_UUID = 'MOCK_UUID';
 jest.mock('uuid/v4', () => ({
@@ -26,6 +27,10 @@ test('create a basic, valid paladin profile', () => {
   expect(pl.spec).toEqual(defaultProfile.spec);
   expect(pl.body.id).toEqual(MOCK_UUID);
   expect(pl.body.revision).toEqual(1);
+
+  // Verify get calls
+  expect(me.getField(Fields.Nickname)).toEqual('Jane');
+  expect(me.getField(Fields.Email)).toEqual('jane@example.com');
 
   // Verify signature
   const keychain = me.getKeychain();
@@ -106,4 +111,46 @@ test('filter for private should keep key', () => {
   expect((filtered.getProfile().credentials as any).privateKey).toEqual(
     (alice.getProfile().credentials as any).privateKey
   );
+});
+
+test('add a friend and test get', () => {
+  // Create bob's profile as a friend
+  const bob = new Profile();
+  bob.initialize();
+  bob.setField(Fields.Nickname, 'Bob', Visibility.Public);
+  bob.sign();
+
+  const eve = new Profile();
+  eve.initialize();
+  eve.setField(Fields.Nickname, 'Eve', Visibility.Public);
+  eve.sign();
+
+  // Create alice and add bob as a friend
+  const alice = new Profile();
+  alice.initialize();
+  alice.addFriend(bob);
+  alice.setField(Fields.Nickname, 'Alice', Visibility.Public);
+  alice.setField(
+    Fields.Email,
+    'alice@example.com',
+    forFriends([bob.toFriend()])
+  );
+  alice.sign();
+
+  // Bob tries to view alice's email, and is allowed
+  expect(alice.getField(Fields.Email, bob)).toEqual('alice@example.com');
+
+  // Eve tries to view alice's email
+  expect(() => {
+    alice.getField(Fields.Email, eve);
+  }).toThrow();
+
+  // Check to make sure friend is listed
+  expect(alice.getField(Fields.Friends)[0].id).toEqual(bob.getId());
+
+  // Remove friend
+  alice.removeFriend(bob);
+
+  // Check to make sure friend has been removed
+  expect(alice.getField(Fields.Friends)).toHaveLength(0);
 });

@@ -1,5 +1,12 @@
+export enum VisibilityMode {
+  Public = 'public',
+  Private = 'private',
+  Friends = 'friends',
+}
+
 export interface IVisibility {
-  mode: 'public' | 'private';
+  mode: VisibilityMode;
+  friends?: IFriend[];
 }
 
 export interface IField {
@@ -12,7 +19,6 @@ export interface IProfileBody {
   id: string | null;
   revision: number | null;
   fields: { [key: string]: IField };
-  friends: IFriend[];
   createdOn: number | null;
   modifiedOn: number | null;
 }

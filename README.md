@@ -2,32 +2,32 @@
 
 This javascript library lets you create and manage profiles for Paladin, the distributed social network.
 
-Create a profile:
+## Basic usage
 
 ```typescript
-import { Paladin } from '@paladin-privacy/profiles';
+import { Profile } from '@paladin-privacy/profiles';
 
-const paladin = new Paladin();
-paladin.initialize();
-paladin.setField(Fields.Nickname, 'Jane', Visibility.Public);
-paladin.setField(Fields.Email, 'jane@example.com', Visibility.Private);
-paladin.sign();
-const data = paladin.getPaladin();
+const profile = new Profile();
+profile.initialize();
+profile.setField(Fields.Nickname, 'Jane', Visibility.Public);
+profile.setField(Fields.Email, 'jane@example.com', Visibility.Private);
+profile.sign();
+const data = profile.getProfile();
 ```
 
 This will create a profile (complete with its keychain), and sign the profile using the generated private key. The `data` can then be persisted to a user's machine.
 
-The profile can be loaded back into memory with the constructor on `Paladin`.
+The profile can be loaded back into memory with the constructor on `Profile`.
 
 ```typescript
 const data = // get the data from the file system
-const paladin = new Paladin(data);
+const profile = new Profile(data);
 ```
 
-To share the profile with someone else, first use `filterFor`; it will strip out confidential information from the profile, such as the profile's private key, and any profile fields that are not set to share.
+To share the profile with someone else, first use `filterFor`; it will strip out confidential information from the profile, such as the profile's private key.
 
 ```typescript
 import { Visibility } from '@paladin-privacy/profiles';
-const toShare = paladin.filterFor(Visibility.Public);
-const dataToShare = toShare.getPaladin();
+const toShare = profile.filterFor(Visibility.Public);
+const dataToShare = profile.getProfile();
 ```

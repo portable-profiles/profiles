@@ -48,9 +48,7 @@ export class PaladinKeychain {
   public encrypt(recipient: PaladinKeychain, data: string): IEncryption {
     const publicKey = recipient.getCredentials().publicKey;
     if (!publicKey) {
-      throw new Error(
-        'These credentials are not authorized to encrypt data'
-      );
+      throw new Error('These credentials are not authorized to encrypt data');
     }
 
     // Encrypt with aes
@@ -75,16 +73,18 @@ export class PaladinKeychain {
   public decrypt(encryption: IEncryption): string {
     const privateKey = this.credentials.privateKey;
     if (!privateKey) {
-      throw new Error(
-        'These credentials are not authorized to decrypt data'
-      );
+      throw new Error('These credentials are not authorized to decrypt data');
     }
 
     const encryptedKey = Buffer.from(encryption.encryptedKey, 'base64');
     const symKey = cr.privateDecrypt(privateKey, encryptedKey);
     const iv = Buffer.from(encryption.iv, 'base64');
     const encryptedText = Buffer.from(encryption.encryptedData, 'base64');
-    const decipher = cr.createDecipheriv(encryption.algorithm, Buffer.from(symKey), iv);
+    const decipher = cr.createDecipheriv(
+      encryption.algorithm,
+      Buffer.from(symKey),
+      iv
+    );
     let decrypted = decipher.update(encryptedText);
     decrypted = Buffer.concat([decrypted, decipher.final()]);
     return decrypted.toString();

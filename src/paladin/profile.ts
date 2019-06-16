@@ -1,6 +1,6 @@
-import { IVisibility, IProfile } from '../models';
+import { IVisibility, IProfile, IFriend } from '../models';
 import * as _ from 'lodash';
-import { defaultProfile, Visibility } from '../constants';
+import { defaultProfile, Visibility, Fields } from '../constants';
 import { PaladinKeychain } from '../crypto/keychain';
 import uuidv4 from 'uuid/v4';
 import * as moment from 'moment';
@@ -44,6 +44,8 @@ export class Profile {
     this.dirty = true;
     this.profile.body.id = uuidv4();
     this.createCredentials();
+    this.setField(Fields.Friends, [], Visibility.Public);
+    this.setField(Fields.Servers, [], Visibility.Public);
   }
 
   public createCredentials() {
@@ -51,9 +53,17 @@ export class Profile {
     this.profile.credentials = PaladinKeychain.create().getCredentials();
   }
 
-  public setField(key: string, value: string, visibility: IVisibility) {
+  public setField(key: string, value: any, visibility?: IVisibility) {
     if (!_.get(this.profile, ['credentials', 'privateKey'])) {
       throw new Error('No credentials available to change this field');
+    }
+    if (!visibility) {
+      visibility = this.getVisibility(key);
+      if (!visibility) {
+        throw new Error(
+          'Visibility was not specified on call, and cannot be inferred as the field is not yet set.'
+        );
+      }
     }
     this.dirty = true;
     ProfileWriter.writeField(this, key, value, visibility);
@@ -148,5 +158,54 @@ export class Profile {
 
   public getField(key: string, me?: Profile): any {
     return ProfileReader.readField(this, key, me);
+  }
+
+  public getVisibility(key: string) {
+    return _.get(
+      this.getProfile(),
+      ['body', 'fields', key, 'visibility'],
+      null
+    );
+  }
+
+  public getPublicKey() {
+    return _.get(this.getProfile(), ['credentials', 'publicKey'], null);
+  }
+
+  public addFriend(friend: Profile) {
+    const friends = this.getField(Fields.Friends);
+    const newFriendList = [
+      ...friends,
+      {
+        id: friend.getId(),
+        nickname: friend.getField(Fields.Nickname),
+        servers: friend.getField(Fields.Servers),
+        publicKey: friend.getPublicKey(),
+      },
+    ];
+    this.setField(Fields.Friends, newFriendList);
+  }
+
+  public removeFriend(friend: Profile) {
+    const friends = this.getField(Fields.Friends);
+    const newFriendList = _.filter(
+      friends,
+      (f: IFriend) => f.id !== friend.getId()
+    );
+    if (friends.length === newFriendList.length) {
+      throw new Error(
+        `The user ${friend.getId()} is not on the friend list so cannot be removed`
+      );
+    }
+    this.setField(Fields.Friends, newFriendList);
+  }
+
+  public toFriend(): IFriend {
+    return {
+      id: this.getId(),
+      nickname: this.getField(Fields.Nickname),
+      servers: this.getField(Fields.Servers),
+      publicKey: this.getPublicKey(),
+    };
   }
 }
