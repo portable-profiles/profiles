@@ -2,7 +2,7 @@ import { IVisibility, IProfile, IFriend } from '../models';
 import * as _ from 'lodash';
 import { defaultProfile, Visibility, Fields } from '../constants';
 import { PaladinKeychain } from '../crypto/keychain';
-import uuidv4 from 'uuid/v4';
+import { v4 } from 'uuid';
 import * as moment from 'moment';
 import { ProfileWriter } from '../utils/profile-writer';
 import { ProfileReader } from '../utils/profile-reader';
@@ -42,7 +42,7 @@ export class Profile {
 
   public initialize() {
     this.dirty = true;
-    this.profile.body.id = uuidv4();
+    this.profile.body.id = v4();
     this.createCredentials();
     this.setField(Fields.Friends, [], Visibility.Public);
     this.setField(Fields.Servers, [], Visibility.Public);

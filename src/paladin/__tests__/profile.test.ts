@@ -5,9 +5,9 @@ import { Profile } from '../profile';
 import { forFriends } from '../../utils/visibility';
 
 const MOCK_UUID = 'MOCK_UUID';
-jest.mock('uuid/v4', () => ({
+jest.mock('uuid', () => ({
   __esModule: true,
-  default: () => MOCK_UUID,
+  v4: () => MOCK_UUID,
 }));
 
 test('create a basic, valid paladin profile', () => {
