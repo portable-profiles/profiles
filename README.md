@@ -1,11 +1,11 @@
-# Paladin Profiles
+# Portable Profiles
 
-This javascript library lets you create and manage profiles for Paladin, the distributed social network.
+This javascript library lets you create and manage profiles for Paladin, the decentralized social network.
 
 ## Basic usage
 
 ```typescript
-import { Profile, Fields, Visibility } from '@paladin-privacy/profiles';
+import { Profile, Fields, Visibility } from '@portable-profiles/profiles';
 
 const profile = new Profile();
 profile.initialize();
@@ -27,7 +27,7 @@ const profile = new Profile(data);
 To share the profile with someone else, first use `filterFor`; it will strip out confidential information from the profile, such as the profile's private key.
 
 ```typescript
-import { Visibility } from '@paladin-privacy/profiles';
+import { Visibility } from '@portable-profiles/profiles';
 const toShare = profile.filterFor(Visibility.Public);
 const dataToShare = profile.getProfile();
 ```
@@ -35,7 +35,7 @@ const dataToShare = profile.getProfile();
 Add friends and encrypt data for them only:
 
 ```typescript
-import { Profile, Fields, Visibility, forFriends } from '@paladin-privacy/profiles';
+import { Profile, Fields, Visibility, forFriends } from '@portable-profiles/profiles';
 
 const alice = new Profile();
 alice.setField(Fields.Nickname, 'Alice', Visibility.Public);

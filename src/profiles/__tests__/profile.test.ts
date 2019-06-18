@@ -10,8 +10,8 @@ jest.mock('uuid', () => ({
   v4: () => MOCK_UUID,
 }));
 
-test('create a basic, valid paladin profile', () => {
-  // Create a basic paladin object
+test('create a basic, valid profile', () => {
+  // Create a basic object
   const me = new Profile();
   expect(me.isValid()).toBe(false);
   me.initialize();
@@ -43,7 +43,7 @@ test('create a basic, valid paladin profile', () => {
 });
 
 test('try to change the profile without access (which is intentionally prevented)', () => {
-  // Alice creates her Paladin profile
+  // Alice creates her profile
   const me = new Profile();
   me.initialize();
   me.setField(Fields.Nickname, 'Alice', Visibility.Public);
@@ -69,7 +69,7 @@ test('try to change the profile without access (which is intentionally prevented
     visibility: Visibility.Private,
   };
   expect(() => {
-    const fallenPaladin = new Profile(fakeCopy);
+    new Profile(fakeCopy);
   }).toThrow();
 });
 

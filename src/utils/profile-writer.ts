@@ -1,7 +1,7 @@
 import { IVisibility, VisibilityMode } from '../models';
-import { Profile } from '../paladin';
+import { Profile } from '../profiles';
 import * as _ from 'lodash';
-import { PaladinKeychain } from '../crypto';
+import { Keychain } from '../crypto';
 
 export class ProfileWriter {
   public static writeField(
@@ -39,7 +39,7 @@ export class ProfileWriter {
         (r, v) => ({
           ...r,
           [v.id]: keychain.encrypt(
-            new PaladinKeychain({ publicKey: v.publicKey }),
+            new Keychain({ publicKey: v.publicKey }),
             value
           ),
         }),

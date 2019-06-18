@@ -3,10 +3,10 @@ import * as _ from 'lodash';
 import cr = require('crypto');
 import keypair = require('keypair');
 
-export class PaladinKeychain {
-  public static create(): PaladinKeychain {
+export class Keychain {
+  public static create(): Keychain {
     const pair = keypair();
-    return new PaladinKeychain({
+    return new Keychain({
       publicKey: pair.public,
       privateKey: pair.private,
     });
@@ -45,7 +45,7 @@ export class PaladinKeychain {
     return verify.verify(publicKey, signature.signature, 'base64');
   }
 
-  public encrypt(recipient: PaladinKeychain, data: string): IEncryption {
+  public encrypt(recipient: Keychain, data: string): IEncryption {
     const publicKey = recipient.getCredentials().publicKey;
     if (!publicKey) {
       throw new Error('These credentials are not authorized to encrypt data');
@@ -96,11 +96,11 @@ export class PaladinKeychain {
 
   public getPublic() {
     const { publicKey } = this.credentials;
-    return new PaladinKeychain({ publicKey });
+    return new Keychain({ publicKey });
   }
 
   public getPrivate() {
     const { privateKey } = this.credentials;
-    return new PaladinKeychain({ privateKey });
+    return new Keychain({ privateKey });
   }
 }

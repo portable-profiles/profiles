@@ -1,6 +1,6 @@
 import { IVisibility, IProfile, IFriend, VisibilityMode } from './models';
 
-export const software = '@paladin-privacy/profiles';
+export const software = '@portable-profiles/profiles';
 export const version = '0.0.1';
 
 export const defaultProfile: IProfile = {

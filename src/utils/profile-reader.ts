@@ -1,4 +1,4 @@
-import { Profile } from '../paladin';
+import { Profile } from '../profiles';
 import * as _ from 'lodash';
 import { VisibilityMode } from '../models';
 
