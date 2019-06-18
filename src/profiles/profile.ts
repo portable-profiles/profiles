@@ -1,7 +1,7 @@
 import { IVisibility, IProfile, IFriend } from '../models';
 import * as _ from 'lodash';
 import { defaultProfile, Visibility, Fields } from '../constants';
-import { PaladinKeychain } from '../crypto/keychain';
+import { Keychain } from '../crypto/keychain';
 import { v4 } from 'uuid';
 import * as moment from 'moment';
 import { ProfileWriter } from '../utils/profile-writer';
@@ -50,7 +50,7 @@ export class Profile {
 
   public createCredentials() {
     this.dirty = true;
-    this.profile.credentials = PaladinKeychain.create().getCredentials();
+    this.profile.credentials = Keychain.create().getCredentials();
   }
 
   public setField(key: string, value: any, visibility?: IVisibility) {
@@ -110,11 +110,11 @@ export class Profile {
     return JSON.stringify(this.profile);
   }
 
-  public getKeychain(): PaladinKeychain | null {
+  public getKeychain(): Keychain | null {
     if (!this.profile.credentials) {
       return null;
     }
-    return new PaladinKeychain(this.profile.credentials);
+    return new Keychain(this.profile.credentials);
   }
 
   public filterFor(visibility: IVisibility): Profile {

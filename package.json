@@ -4,8 +4,8 @@
   "description": "Javascript library to manage portable profiles",
   "main": "dist/index.js",
   "scripts": {
-    "format": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\"",
-    "format:check": "prettier --check \"./**/*.{js,jsx,json,ts,tsx}\"",
+    "format": "prettier --write \"./src/**/*.{js,jsx,json,ts,tsx}\"",
+    "format:check": "prettier --check \"./src/**/*.{js,jsx,json,ts,tsx}\"",
     "lint": "tslint --fix src/**/*.{js,jsx,ts,tsx}",
     "lint:check": "tslint src/**/*.{js,jsx,ts,tsx}",
     "test": "jest --coverage",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/paladin-privacy/profiles.git"
+    "url": "git+https://github.com/portable-profiles/profiles.git"
   },
   "author": "",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/paladin-privacy/profiles/issues"
+    "url": "https://github.com/portable-profiles/profiles/issues"
   },
-  "homepage": "https://github.com/paladin-privacy/profiles#readme",
+  "homepage": "https://github.com/portable-profiles/profiles#readme",
   "devDependencies": {
     "@types/jest": "^24.0.13",
     "@types/lodash": "^4.14.132",
