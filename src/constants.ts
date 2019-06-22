@@ -12,6 +12,7 @@ export const defaultProfile: IProfile = {
     createdOn: null,
     modifiedOn: null,
   },
+  publicKey: '',
   signature: null,
 };
 

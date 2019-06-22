@@ -60,7 +60,7 @@ export interface IProfile {
   spec: string;
   body: IProfileBody;
   signature: ISignature | null;
-  credentials?: ICredentials;
+  publicKey: string;
 }
 
 export interface IServer {

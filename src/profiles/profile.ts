@@ -1,4 +1,4 @@
-import { IVisibility, IProfile, IFriend } from '../models';
+import { IVisibility, IProfile, IFriend, ICredentials } from '../models';
 import * as _ from 'lodash';
 import { defaultProfile, Visibility, Fields } from '../constants';
 import { Keychain } from '../crypto/keychain';
@@ -6,9 +6,11 @@ import { v4 } from 'uuid';
 import * as moment from 'moment';
 import { ProfileWriter } from '../utils/profile-writer';
 import { ProfileReader } from '../utils/profile-reader';
+import { fingerprint } from '../utils/fingerprint';
 
 export class Profile {
   private profile: IProfile;
+  private credentials?: ICredentials;
 
   // Indicates whether there are unsigned changes
   private dirty: boolean = false;
@@ -16,6 +18,7 @@ export class Profile {
   constructor(profile: Partial<IProfile> | null = null) {
     if (profile) {
       // If there is a profile, assign defaults and verify
+      this.credentials = { publicKey: profile.publicKey };
       this.profile = _.defaultsDeep(profile, defaultProfile);
       if (!this.isValid()) {
         throw new Error('The signature on this profile is invalid');
@@ -42,21 +45,24 @@ export class Profile {
 
   public initialize() {
     this.dirty = true;
-    this.profile.body.id = v4();
     this.createCredentials();
+    this.profile.body.id = fingerprint(this.credentials);
     this.setField(Fields.Friends, [], Visibility.Public);
     this.setField(Fields.Servers, [], Visibility.Public);
   }
 
   public createCredentials() {
     this.dirty = true;
-    this.profile.credentials = Keychain.create().getCredentials();
+    this.credentials = Keychain.create().getCredentials();
+    this.profile.publicKey = this.credentials.publicKey as string;
   }
 
   public setField(key: string, value: any, visibility?: IVisibility) {
-    if (!_.get(this.profile, ['credentials', 'privateKey'])) {
+    if (!this.getPrivateKey()) {
       throw new Error('No credentials available to change this field');
     }
+
+    // If no visibility is provided, use existing. If neither, error
     if (!visibility) {
       visibility = this.getVisibility(key);
       if (!visibility) {
@@ -65,6 +71,8 @@ export class Profile {
         );
       }
     }
+
+    // Mark as dirty and write field
     this.dirty = true;
     ProfileWriter.writeField(this, key, value, visibility);
   }
@@ -111,41 +119,14 @@ export class Profile {
   }
 
   public getKeychain(): Keychain | null {
-    if (!this.profile.credentials) {
+    if (!this.credentials) {
       return null;
     }
-    return new Keychain(this.profile.credentials);
+    return new Keychain(this.credentials);
   }
 
-  public filterFor(visibility: IVisibility): Profile {
-    // Copy the data from this instance
-    const data = _.cloneDeep(this.getProfile());
-
-    // Get a keychain and make sure that it can sign
-    const keychain = this.getKeychain();
-    if (!keychain) {
-      throw new Error('No credentials available to sign a filtered copy');
-    }
-
-    // Hide private key unless filtering for private/self
-    if (visibility.mode !== Visibility.Private.mode) {
-      data.credentials = {
-        publicKey: _.get(data, ['credentials', 'publicKey']),
-      };
-    }
-
-    // Hide profile fields that are concealed from this visibility
-    data.body.fields = _.pickBy(
-      data.body.fields,
-      (v, k) =>
-        v.visibility.mode === 'public' || v.visibility.mode === visibility.mode
-    );
-
-    // Sign the filtered profile
-    const profileBody = JSON.stringify(data.body);
-    data.signature = keychain.sign(profileBody);
-
-    return new Profile(data);
+  public getCredentials(): ICredentials | undefined {
+    return this.credentials;
   }
 
   public getId(): string {
@@ -160,7 +141,7 @@ export class Profile {
     return ProfileReader.readField(this, key, me);
   }
 
-  public getVisibility(key: string) {
+  public getVisibility(key: string): IVisibility {
     return _.get(
       this.getProfile(),
       ['body', 'fields', key, 'visibility'],
@@ -168,11 +149,15 @@ export class Profile {
     );
   }
 
-  public getPublicKey() {
-    return _.get(this.getProfile(), ['credentials', 'publicKey'], null);
+  public getPublicKey(): string | null {
+    return _.get(this.credentials, ['publicKey'], null);
   }
 
-  public addFriend(friend: Profile) {
+  public getPrivateKey(): string | null {
+    return _.get(this.credentials, ['privateKey'], null);
+  }
+
+  public addFriend(friend: Profile): void {
     const friends = this.getField(Fields.Friends);
     const newFriendList = [
       ...friends,
@@ -186,7 +171,7 @@ export class Profile {
     this.setField(Fields.Friends, newFriendList);
   }
 
-  public removeFriend(friend: Profile) {
+  public removeFriend(friend: Profile): void {
     const friends = this.getField(Fields.Friends);
     const newFriendList = _.filter(
       friends,
@@ -201,11 +186,15 @@ export class Profile {
   }
 
   public toFriend(): IFriend {
+    const publicKey = this.getPublicKey();
+    if (!publicKey) {
+      throw new Error('Public key required for this action');
+    }
     return {
       id: this.getId(),
       nickname: this.getField(Fields.Nickname),
       servers: this.getField(Fields.Servers),
-      publicKey: this.getPublicKey(),
+      publicKey,
     };
   }
 }

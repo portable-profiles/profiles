@@ -3,12 +3,7 @@ import * as _ from 'lodash';
 import { ISignature } from '../../models';
 import { Profile } from '../profile';
 import { forFriends } from '../../utils/visibility';
-
-const MOCK_UUID = 'MOCK_UUID';
-jest.mock('uuid', () => ({
-  __esModule: true,
-  v4: () => MOCK_UUID,
-}));
+import { fingerprint } from '../../utils/fingerprint';
 
 test('create a basic, valid profile', () => {
   // Create a basic object
@@ -25,7 +20,7 @@ test('create a basic, valid profile', () => {
 
   // Verify a few basic properties
   expect(pl.spec).toEqual(defaultProfile.spec);
-  expect(pl.body.id).toEqual(MOCK_UUID);
+  expect(pl.body.id).toEqual(fingerprint(me.getCredentials()));
   expect(pl.body.revision).toEqual(1);
 
   // Verify get calls
@@ -44,17 +39,14 @@ test('create a basic, valid profile', () => {
 
 test('try to change the profile without access (which is intentionally prevented)', () => {
   // Alice creates her profile
-  const me = new Profile();
-  me.initialize();
-  me.setField(Fields.Nickname, 'Alice', Visibility.Public);
-  me.setField(Fields.Email, 'alice@example.com', Visibility.Private);
-  me.sign();
-
-  // Get the data
-  const alice = me.filterFor(Visibility.Public).getProfile();
+  const alice = new Profile();
+  alice.initialize();
+  alice.setField(Fields.Nickname, 'Alice', Visibility.Public);
+  alice.setField(Fields.Email, 'alice@example.com', Visibility.Private);
+  alice.sign();
 
   // Bob receives the profile
-  const bobsCopy = new Profile(alice);
+  const bobsCopy = new Profile(alice.getProfile());
 
   // Try to edit using the official API
   expect(() => {
@@ -63,13 +55,13 @@ test('try to change the profile without access (which is intentionally prevented
   expect(bobsCopy.isDirty()).toBe(false);
 
   // Try editing by directly changing the data
-  const fakeCopy = _.cloneDeep(alice);
+  const fakeCopy = _.cloneDeep(alice.getProfile());
   fakeCopy.body.fields[Fields.Email] = {
     value: 'bob@example.com',
     visibility: Visibility.Private,
   };
   expect(() => {
-    new Profile(fakeCopy);
+    const profile = new Profile(fakeCopy);
   }).toThrow();
 });
 
@@ -77,13 +69,6 @@ test('verify that sign requires credentials', () => {
   const profile = new Profile();
   expect(() => {
     profile.sign();
-  }).toThrow();
-});
-
-test('verify that filterFor requires credentials', () => {
-  const profile = new Profile();
-  expect(() => {
-    profile.filterFor(Visibility.Public);
   }).toThrow();
 });
 
@@ -102,15 +87,6 @@ test('verify multiple revisions', () => {
     profile.sign();
     expect(profile.getProfile().body.revision).toEqual(2);
   }).not.toThrow();
-});
-
-test('filter for private should keep key', () => {
-  const alice = new Profile();
-  alice.initialize();
-  const filtered = alice.filterFor(Visibility.Private);
-  expect((filtered.getProfile().credentials as any).privateKey).toEqual(
-    (alice.getProfile().credentials as any).privateKey
-  );
 });
 
 test('add a friend and test get', () => {
