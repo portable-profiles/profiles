@@ -15,10 +15,10 @@ export class Profile {
   // Indicates whether there are unsigned changes
   private dirty: boolean = false;
 
-  constructor(profile: Partial<IProfile> | null = null) {
+  constructor(profile?: Partial<IProfile>, privateKey?: string) {
     if (profile) {
       // If there is a profile, assign defaults and verify
-      this.credentials = { publicKey: profile.publicKey };
+      this.credentials = { publicKey: profile.publicKey, privateKey };
       this.profile = _.defaultsDeep(profile, defaultProfile);
       if (!this.isValid()) {
         throw new Error('The signature on this profile is invalid');
@@ -112,6 +112,17 @@ export class Profile {
 
   public getProfile() {
     return this.profile;
+  }
+
+  public pack(): { json: string; privateKey: string } {
+    const privateKey = this.getPrivateKey();
+    if (!privateKey) {
+      throw new Error('Private key not found');
+    }
+    return {
+      json: this.toString(),
+      privateKey,
+    };
   }
 
   public toString() {

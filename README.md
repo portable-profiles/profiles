@@ -9,10 +9,10 @@ import { Profile, Fields, Visibility } from '@portable-profiles/profiles';
 
 const profile = new Profile();
 profile.initialize();
-profile.setField(Fields.Nickname, 'Jane', Visibility.Public);
-profile.setField(Fields.Email, 'jane@example.com', Visibility.Private);
+profile.setField(Fields.Nickname, 'Alice', Visibility.Public);
+profile.setField(Fields.Email, 'alice@example.com', Visibility.Private);
 profile.sign();
-const data = profile.getProfile();
+const { json, privateKey } = profile.pack();
 ```
 
 This will create a profile (complete with its keychain), and sign the profile using the generated private key. The `data` can then be persisted to a user's machine.

@@ -1,6 +1,6 @@
 {
   "name": "@portable-profiles/profiles",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Javascript library to manage portable profiles",
   "main": "dist/index.js",
   "scripts": {

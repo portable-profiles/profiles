@@ -130,3 +130,23 @@ test('add a friend and test get', () => {
   // Check to make sure friend has been removed
   expect(alice.getField(Fields.Friends)).toHaveLength(0);
 });
+
+test('create and restore a profile', () => {
+  const original = new Profile();
+  original.initialize();
+  original.setField(Fields.Nickname, 'Alice', Visibility.Public);
+  original.setField(Fields.Email, 'alice@example.com', Visibility.Public);
+  original.sign();
+  const { json, privateKey } = original.pack();
+
+  // Persist the profile and private key
+  // ...
+  // Retrieve the profile and private key
+
+  const copy = new Profile(JSON.parse(json), privateKey);
+  copy.setField(Fields.Email, 'alice2@example.com');
+  copy.sign();
+
+  const profile = copy.getProfile();
+  expect(profile.body.fields[Fields.Email].value).toEqual('alice2@example.com');
+});
